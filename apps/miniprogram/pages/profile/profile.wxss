@@ -1,0 +1,13 @@
+.profile-header { display: flex; align-items: center; padding: 32rpx; }
+.profile-info { margin-left: 24rpx; }
+.name { font-size: 36rpx; font-weight: bold; }
+.role { color: #4a90d9; font-size: 26rpx; margin-top: 8rpx; }
+.phone { color: #999; font-size: 24rpx; margin-top: 4rpx; }
+.login-btn { width: 100%; }
+.menu-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28rpx 0; border-bottom: 1rpx solid #f5f5f5; font-size: 30rpx;
+}
+.menu-item:last-child { border-bottom: none; }
+.arrow { color: #ccc; font-size: 36rpx; }
+.logout-text { color: #e74c3c; }

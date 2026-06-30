@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">选择科目</view>
+    <picker mode="selector" range="{{subjects}}" bindchange="onSubjectChange">
+      <view class="picker-row">{{selectedSubject}} ▼</view>
+    </picker>
+    <picker mode="selector" range="{{gradeLevels}}" bindchange="onGradeChange">
+      <view class="picker-row">{{selectedGrade}} ▼</view>
+    </picker>
+  </view>
+
+  <view class="card">
+    <view class="section-title">选择时间</view>
+    <picker mode="date" start="{{today}}" bindchange="onDateChange">
+      <view class="picker-row">{{lessonDate || '请选择日期'}} ▼</view>
+    </picker>
+    <picker mode="time" bindchange="onStartTimeChange">
+      <view class="picker-row">开始 {{startTime}} ▼</view>
+    </picker>
+    <picker mode="time" bindchange="onEndTimeChange">
+      <view class="picker-row">结束 {{endTime}} ▼</view>
+    </picker>
+  </view>
+
+  <view class="card">
+    <view class="section-title">学习需求</view>
+    <textarea placeholder="请描述您的学习目标和特殊需求" value="{{requirement}}" bindinput="onRequirementInput" maxlength="500" />
+  </view>
+
+  <view class="card price-card">
+    <view class="flex-between"><text>课时费</text><text>¥{{lessonFee}}</text></view>
+    <view class="flex-between tip"><text>平台将在确认时展示最终费用（含服务费）</text></view>
+  </view>
+
+  <button class="btn-primary" bindtap="submit">确认预约并支付</button>
+</view>

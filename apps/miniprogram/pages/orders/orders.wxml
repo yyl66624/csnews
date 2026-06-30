@@ -1,0 +1,28 @@
+<view class="container">
+  <scroll-view scroll-x class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabTap"
+    >{{item.label}}</view>
+  </scroll-view>
+
+  <view wx:if="{{orders.length === 0 && !loading}}" class="empty">暂无订单</view>
+  <view wx:for="{{orders}}" wx:key="id" class="order-card card" data-id="{{item.id}}" bindtap="goDetail">
+    <view class="flex-between">
+      <text class="order-no">{{item.orderNo}}</text>
+      <text class="status">{{statusMap[item.status]}}</text>
+    </view>
+    <view class="order-info">
+      <text>{{item.subject}} · {{item.gradeLevel}}</text>
+    </view>
+    <view class="order-info">{{item.lessonDate}} {{item.startTime}}-{{item.endTime}}</view>
+    <view class="flex-between">
+      <text class="teacher">{{item.teacherName}}</text>
+      <text class="price">¥{{item.totalAmount}}</text>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+</view>

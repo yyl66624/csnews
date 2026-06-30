@@ -1,0 +1,46 @@
+<view class="container" wx:if="{{teacher}}">
+  <view class="header card">
+    <view class="flex-row">
+      <image class="avatar-lg" src="{{teacher.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" />
+      <view class="header-info">
+        <view class="name">{{teacher.realName || teacher.nickname}}</view>
+        <view class="rating">★ {{teacher.rating}} · {{teacher.reviewCount}}条评价 · {{teacher.orderCount}}单</view>
+        <view class="meta">{{teacher.education}} · {{teacher.teachingYears}}年教龄 · {{teacher.city || '全国'}}</view>
+      </view>
+    </view>
+    <view class="bio">{{teacher.bio || '暂无简介'}}</view>
+    <view class="style-tag">教学风格：{{teacher.teachingStyle || '耐心细致'}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">授课科目与价格</view>
+    <view wx:for="{{teacher.subjects}}" wx:key="id" class="subject-row flex-between">
+      <text>{{item.subject}} · {{item.gradeLevel}}</text>
+      <text class="price">¥{{item.price}}/课时</text>
+    </view>
+    <view wx:if="{{teacher.subjects.length === 0}}" class="empty-text">暂无科目信息</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">可预约时间</view>
+    <view wx:for="{{scheduleList}}" wx:key="id" class="schedule-row">{{item.label}}</view>
+    <view wx:if="{{scheduleList.length === 0}}" class="empty-text">请联系教师确认时间</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">学生评价</view>
+    <view wx:for="{{reviews}}" wx:key="id" class="review-item">
+      <view class="flex-between">
+        <text>{{item.studentName}}</text>
+        <text class="rating">★ {{item.rating}}</text>
+      </view>
+      <view class="review-content">{{item.content || '用户未填写评语'}}</view>
+    </view>
+    <view wx:if="{{reviews.length === 0}}" class="empty-text">暂无评价</view>
+  </view>
+
+  <view class="bottom-bar">
+    <button class="btn-primary" bindtap="goBooking">立即预约</button>
+  </view>
+</view>
+<view wx:if="{{loading}}" class="empty">加载中...</view>

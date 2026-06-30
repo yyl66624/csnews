@@ -1,0 +1,6 @@
+.section-title { font-size: 30rpx; font-weight: bold; margin-bottom: 16rpx; }
+.picker-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; color: #333; }
+textarea { width: 100%; height: 200rpx; padding: 16rpx; background: #f9f9f9; border-radius: 8rpx; box-sizing: border-box; }
+.price-card .flex-between { padding: 12rpx 0; color: #666; }
+.price-card .total { font-size: 32rpx; font-weight: bold; color: #333; border-top: 1rpx solid #f0f0f0; margin-top: 12rpx; padding-top: 20rpx; }
+.btn-primary { margin-top: 32rpx; }

@@ -1,0 +1,11 @@
+{
+  "description": "私有配置，不会被上传到微信",
+  "projectname": "csnews-miniprogram",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  }
+}

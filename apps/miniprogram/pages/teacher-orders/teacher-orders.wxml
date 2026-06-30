@@ -1,0 +1,22 @@
+<view class="container">
+  <view wx:if="{{orders.length === 0}}" class="empty">暂无订单</view>
+  <view wx:for="{{orders}}" wx:key="id" class="card">
+    <view class="flex-between">
+      <text>{{item.subject}} · {{item.gradeLevel}}</text>
+      <text class="status">{{statusMap[item.status]}}</text>
+    </view>
+    <view class="info">{{item.lessonDate}} {{item.startTime}}-{{item.endTime}}</view>
+    <view class="info">学生：{{item.studentName}} · ¥{{item.lessonFee}}</view>
+    <view class="actions" wx:if="{{item.status === 'pending'}}">
+      <button size="mini" type="primary" data-id="{{item.id}}" bindtap="confirm">接单</button>
+      <button size="mini" data-id="{{item.id}}" bindtap="reject">拒单</button>
+    </view>
+    <view class="actions" wx:if="{{item.status === 'confirmed'}}">
+      <button size="mini" type="primary" data-id="{{item.id}}" bindtap="start">开始上课</button>
+      <button size="mini" data-id="{{item.id}}" bindtap="complete">确认完成</button>
+    </view>
+    <view class="actions" wx:if="{{item.status === 'in_progress'}}">
+      <button size="mini" type="primary" data-id="{{item.id}}" bindtap="complete">确认完成</button>
+    </view>
+  </view>
+</view>

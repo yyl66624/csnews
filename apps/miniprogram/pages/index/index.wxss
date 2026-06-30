@@ -1,0 +1,20 @@
+.filter-bar { padding: 16rpx 24rpx; }
+.filter-scroll { white-space: nowrap; margin-bottom: 12rpx; }
+.filter-item {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  margin-right: 12rpx;
+  background: #f0f0f0;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+}
+.filter-item.active { background: #4a90d9; color: #fff; }
+.sort-btn { font-size: 26rpx; color: #666; text-align: right; }
+.teacher-card { padding: 24rpx; }
+.teacher-info { flex: 1; margin-left: 20rpx; }
+.name { font-size: 32rpx; font-weight: bold; }
+.meta { color: #999; font-size: 24rpx; margin: 8rpx 0; }
+.tags { margin-top: 8rpx; }
+.price-row { margin-top: 16rpx; padding-top: 16rpx; border-top: 1rpx solid #f0f0f0; }
+.error-tip { text-align: center; padding: 40rpx; color: #e74c3c; font-size: 26rpx; }
+.style { color: #666; font-size: 24rpx; }

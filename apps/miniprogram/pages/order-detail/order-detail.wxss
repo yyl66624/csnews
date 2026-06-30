@@ -1,0 +1,6 @@
+.status-big { font-size: 40rpx; font-weight: bold; color: #4a90d9; text-align: center; }
+.order-no { text-align: center; color: #999; font-size: 24rpx; margin-top: 8rpx; }
+.row { display: flex; justify-content: space-between; padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.label { color: #999; }
+.total { font-weight: bold; border-bottom: none; }
+.btn-cancel { margin-top: 32rpx; background: #fff; color: #e74c3c; border: 1rpx solid #e74c3c; border-radius: 44rpx; }

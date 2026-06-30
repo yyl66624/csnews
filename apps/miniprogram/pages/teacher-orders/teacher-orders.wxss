@@ -1,0 +1,3 @@
+.status { color: #4a90d9; }
+.info { color: #666; font-size: 26rpx; margin: 8rpx 0; }
+.actions { margin-top: 16rpx; display: flex; gap: 16rpx; }

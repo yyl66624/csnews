@@ -1,0 +1,7 @@
+.audit-status { font-size: 32rpx; font-weight: bold; color: #4a90d9; }
+.reject-reason { color: #e74c3c; margin-top: 12rpx; font-size: 26rpx; }
+.stats { display: flex; justify-content: space-around; text-align: center; }
+.stat-item .num { display: block; font-size: 40rpx; font-weight: bold; color: #4a90d9; }
+.stat-item .label { font-size: 24rpx; color: #999; }
+.menu-item { display: flex; justify-content: space-between; padding: 28rpx 0; font-size: 30rpx; }
+.arrow { color: #ccc; }

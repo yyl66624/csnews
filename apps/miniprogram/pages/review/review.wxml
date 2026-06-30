@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">课程评分</view>
+    <slider min="1" max="5" step="1" show-value value="{{rating}}" bindchange="onRatingChange" activeColor="#f5a623" />
+    <text class="rating-text">{{rating}} 星</text>
+  </view>
+
+  <view class="card">
+    <view class="section-title">评价标签</view>
+    <view class="tags">
+      <view
+        wx:for="{{tags}}"
+        wx:key="*this"
+        class="tag {{selectedTags.indexOf(item) >= 0 ? 'active' : ''}}"
+        data-tag="{{item}}"
+        bindtap="onTagTap"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">详细评语</view>
+    <textarea placeholder="分享您的上课体验" value="{{content}}" bindinput="onContentInput" maxlength="500" />
+  </view>
+
+  <view class="card flex-between">
+    <text>匿名评价</text>
+    <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" color="#4a90d9" />
+  </view>
+
+  <button class="btn-primary" bindtap="submit">提交评价</button>
+</view>

@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">基本信息</view>
+    <input placeholder="真实姓名" data-field="realName" bindinput="onInput" />
+    <input placeholder="身份证号" data-field="idCard" bindinput="onInput" />
+    <picker mode="selector" range="{{educationOptions}}" bindchange="onEducationChange">
+      <view class="picker-row">学历：{{form.education}} ▼</view>
+    </picker>
+    <view class="slider-row">教龄：{{form.teachingYears}}年
+      <slider min="0" max="30" value="{{form.teachingYears}}" bindchange="onYearsChange" />
+    </view>
+    <input placeholder="所在城市" data-field="city" bindinput="onInput" />
+    <textarea placeholder="个人简介" data-field="bio" bindinput="onInput" />
+    <input placeholder="教学风格" data-field="teachingStyle" bindinput="onInput" />
+  </view>
+
+  <view class="card">
+    <view class="section-title">科目定价</view>
+    <view wx:for="{{subjectPrices}}" wx:key="index" class="price-item">
+      <input placeholder="科目" value="{{item.subject}}" data-index="{{index}}" data-field="subject" bindinput="onSubjectPriceChange" />
+      <input placeholder="年级" value="{{item.gradeLevel}}" data-index="{{index}}" data-field="gradeLevel" bindinput="onSubjectPriceChange" />
+      <input type="number" placeholder="价格" value="{{item.price}}" data-index="{{index}}" data-field="price" bindinput="onSubjectPriceChange" />
+    </view>
+    <button size="mini" bindtap="addSubject">+ 添加科目</button>
+  </view>
+
+  <view class="card">
+    <view class="section-title">可授课时间</view>
+    <view wx:for="{{schedules}}" wx:key="index" class="schedule-item">
+      周{{item.dayOfWeek}} {{item.startTime}}-{{item.endTime}}
+    </view>
+    <button size="mini" bindtap="addSchedule">+ 添加时段</button>
+  </view>
+
+  <button class="btn-primary" bindtap="submit">提交入驻申请</button>
+</view>

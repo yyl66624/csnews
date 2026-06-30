@@ -1,0 +1,58 @@
+<view class="container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar card">
+    <scroll-view scroll-x class="filter-scroll">
+      <view
+        wx:for="{{subjects}}"
+        wx:key="*this"
+        class="filter-item {{selectedSubject === item ? 'active' : ''}}"
+        data-subject="{{item}}"
+        bindtap="onSubjectTap"
+      >{{item}}</view>
+    </scroll-view>
+    <scroll-view scroll-x class="filter-scroll">
+      <view
+        wx:for="{{gradeLevels}}"
+        wx:key="*this"
+        class="filter-item {{selectedGrade === item ? 'active' : ''}}"
+        data-grade="{{item}}"
+        bindtap="onGradeTap"
+      >{{item}}</view>
+    </scroll-view>
+    <picker mode="selector" range="{{['评分最高','价格最低','经验最丰富']}}" bindchange="onSortChange">
+      <view class="sort-btn">排序 ▼</view>
+    </picker>
+  </view>
+
+  <!-- 教师列表 -->
+  <view wx:if="{{loadError}}" class="error-tip">{{loadError}}</view>
+  <view wx:if="{{teachers.length === 0 && !loading && !loadError}}" class="empty">暂无匹配教师</view>
+  <view
+    wx:for="{{teachers}}"
+    wx:key="id"
+    class="teacher-card card"
+    data-id="{{item.id}}"
+    bindtap="goDetail"
+  >
+    <view class="flex-row">
+      <image class="avatar" src="{{item.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" />
+      <view class="teacher-info">
+        <view class="flex-between">
+          <text class="name">{{item.realName || item.nickname}}</text>
+          <text class="rating">★ {{item.rating}} ({{item.reviewCount}})</text>
+        </view>
+        <view class="meta">{{item.education}} · {{item.teachingYears}}年教龄 · {{item.city || '全国'}}</view>
+        <view class="tags">
+          <text wx:for="{{item.subjects}}" wx:for-item="sub" wx:key="subject" class="tag">{{sub.subject}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="flex-between price-row">
+      <text class="style">{{item.teachingStyle || '耐心细致'}}</text>
+      <text class="price">¥{{item.minPrice}}<text class="price-unit">/课时</text></text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:if="{{!hasMore && teachers.length > 0}}" class="empty">没有更多了</view>
+</view>
