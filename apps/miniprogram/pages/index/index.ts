@@ -1,4 +1,5 @@
 const api = require('../../utils/api');
+const anim = require('../../utils/anim');
 
 Page({
   data: {
@@ -7,7 +8,7 @@ Page({
     selectedSubject: '',
     selectedGrade: '',
     sortBy: 'rating',
-    teachers: [],
+    teachers: [] as any[],
     loading: false,
     page: 1,
     hasMore: true,
@@ -31,13 +32,18 @@ Page({
     }
   },
 
-  loadTeachers: function (reset) {
+  onRetry: function () {
+    this.setData({ loadError: '' });
+    this.loadTeachers(true);
+  },
+
+  loadTeachers: function (reset: boolean) {
     var that = this;
     if (this.data.loading) return Promise.resolve();
     this.setData({ loading: true, loadError: '' });
 
     var page = reset ? 1 : this.data.page + 1;
-    var params = { page: page, pageSize: 10, sortBy: this.data.sortBy };
+    var params: any = { page: page, pageSize: 10, sortBy: this.data.sortBy };
     if (this.data.selectedSubject) params.subject = this.data.selectedSubject;
     if (this.data.selectedGrade) params.gradeLevel = this.data.selectedGrade;
 
@@ -47,24 +53,29 @@ Page({
 
     return api.request({ url: '/teachers?' + query, auth: false })
       .then(function (res) {
-        var teachers = reset ? res.items : that.data.teachers.concat(res.items);
+        var rawTeachers = reset ? res.items : that.data.teachers.concat(res.items);
+        // 应用交错入场动画
+        var teachers = anim.staggerList(rawTeachers, 'animData', {
+          staggerDelay: 60,
+          fromY: 20,
+          duration: 350,
+        });
         that.setData({
           teachers: teachers,
           page: page,
-          hasMore: teachers.length < res.total,
+          hasMore: rawTeachers.length < res.total,
           loading: false,
         });
       })
       .catch(function (err) {
         that.setData({
           loading: false,
-          loadError: err.message || '加载失败',
+          loadError: err.message || '加载失败，请检查网络',
         });
-        wx.showToast({ title: '加载失败', icon: 'none' });
       });
   },
 
-  onSubjectTap: function (e) {
+  onSubjectTap: function (e: any) {
     var subject = e.currentTarget.dataset.subject;
     this.setData({
       selectedSubject: this.data.selectedSubject === subject ? '' : subject,
@@ -72,7 +83,7 @@ Page({
     this.loadTeachers(true);
   },
 
-  onGradeTap: function (e) {
+  onGradeTap: function (e: any) {
     var grade = e.currentTarget.dataset.grade;
     this.setData({
       selectedGrade: this.data.selectedGrade === grade ? '' : grade,
@@ -80,13 +91,13 @@ Page({
     this.loadTeachers(true);
   },
 
-  onSortChange: function (e) {
+  onSortChange: function (e: any) {
     var sorts = ['rating', 'price', 'experience'];
     this.setData({ sortBy: sorts[Number(e.detail.value)] });
     this.loadTeachers(true);
   },
 
-  goDetail: function (e) {
+  goDetail: function (e: any) {
     wx.navigateTo({ url: '/pages/teacher-detail/teacher-detail?id=' + e.currentTarget.dataset.id });
   },
 });

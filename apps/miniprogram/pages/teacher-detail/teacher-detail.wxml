@@ -1,5 +1,8 @@
-<view class="container" wx:if="{{teacher}}">
-  <view class="header card">
+<!-- 骨架屏 -->
+<skeleton wx:if="{{loading}}" type="detail" />
+
+<view class="container" wx:if="{{!loading && teacher}}">
+  <view class="header card anim-slide-up">
     <view class="flex-row">
       <image class="avatar-lg" src="{{teacher.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" />
       <view class="header-info">
@@ -12,7 +15,7 @@
     <view class="style-tag">教学风格：{{teacher.teachingStyle || '耐心细致'}}</view>
   </view>
 
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">授课科目与价格</view>
     <view wx:for="{{teacher.subjects}}" wx:key="id" class="subject-row flex-between">
       <text>{{item.subject}} · {{item.gradeLevel}}</text>
@@ -21,13 +24,13 @@
     <view wx:if="{{teacher.subjects.length === 0}}" class="empty-text">暂无科目信息</view>
   </view>
 
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">可预约时间</view>
     <view wx:for="{{scheduleList}}" wx:key="id" class="schedule-row">{{item.label}}</view>
     <view wx:if="{{scheduleList.length === 0}}" class="empty-text">请联系教师确认时间</view>
   </view>
 
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">学生评价</view>
     <view wx:for="{{reviews}}" wx:key="id" class="review-item">
       <view class="flex-between">
@@ -43,4 +46,3 @@
     <button class="btn-primary" bindtap="goBooking">立即预约</button>
   </view>
 </view>
-<view wx:if="{{loading}}" class="empty">加载中...</view>

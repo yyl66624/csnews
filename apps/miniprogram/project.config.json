@@ -1,6 +1,9 @@
 {
   "description": "一对一家教小程序",
-  "packOptions": { "ignore": [], "include": [] },
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
   "setting": {
     "bundle": false,
     "userConfirmedBundleSwitch": false,
@@ -18,7 +21,9 @@
     "minifyWXML": true,
     "localPlugins": false,
     "disableUseStrict": false,
-    "useCompilerPlugins": ["typescript"],
+    "useCompilerPlugins": [
+      "typescript"
+    ],
     "condition": false,
     "swc": false,
     "disableSWC": true,
@@ -30,7 +35,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.4.0",
-  "appid": "your_wx_appid",
+  "appid": "wxb32648c1398822ac",
   "projectname": "csnews-miniprogram",
   "condition": {},
   "simulatorPluginLibVersion": {},

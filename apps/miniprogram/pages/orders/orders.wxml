@@ -1,5 +1,5 @@
 <view class="container">
-  <scroll-view scroll-x class="tabs">
+  <scroll-view scroll-x class="tabs anim-slide-up">
     <view
       wx:for="{{tabs}}"
       wx:key="key"
@@ -9,8 +9,17 @@
     >{{item.label}}</view>
   </scroll-view>
 
-  <view wx:if="{{orders.length === 0 && !loading}}" class="empty">暂无订单</view>
-  <view wx:for="{{orders}}" wx:key="id" class="order-card card" data-id="{{item.id}}" bindtap="goDetail">
+  <!-- 骨架屏 -->
+  <skeleton wx:if="{{loading && orders.length === 0}}" type="card" count="3" />
+
+  <!-- 空态 -->
+  <view wx:if="{{orders.length === 0 && !loading}}" class="empty">
+    <text class="empty-icon">📋</text>
+    <text>暂无订单</text>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:for="{{orders}}" wx:key="id" class="order-card card anim-slide-up" data-id="{{item.id}}" bindtap="goDetail">
     <view class="flex-between">
       <text class="order-no">{{item.orderNo}}</text>
       <text class="status">{{statusMap[item.status]}}</text>
@@ -24,5 +33,4 @@
       <text class="price">¥{{item.totalAmount}}</text>
     </view>
   </view>
-  <view wx:if="{{loading}}" class="empty">加载中...</view>
 </view>

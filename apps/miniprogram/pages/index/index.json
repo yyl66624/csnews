@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "找老师",
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  }
 }

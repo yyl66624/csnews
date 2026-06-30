@@ -1,3 +1,17 @@
+.empty-tip {
+  text-align: center;
+  padding: 48rpx 24rpx;
+  color: #666;
+}
+.apply-link {
+  display: inline-block;
+  margin-top: 24rpx;
+  padding: 16rpx 40rpx;
+  background: #4a90d9;
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+}
 .audit-status { font-size: 32rpx; font-weight: bold; color: #4a90d9; }
 .reject-reason { color: #e74c3c; margin-top: 12rpx; font-size: 26rpx; }
 .stats { display: flex; justify-content: space-around; text-align: center; }

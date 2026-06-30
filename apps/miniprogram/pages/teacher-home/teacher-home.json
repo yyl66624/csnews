@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "教师中心" }
+{
+  "navigationBarTitleText": "教师中心",
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  }
+}

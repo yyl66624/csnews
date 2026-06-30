@@ -69,7 +69,7 @@ export class ReviewsService {
       .createQueryBuilder('r')
       .select('AVG(r.rating)', 'avgRating')
       .addSelect('COUNT(r.id)', 'count')
-      .where('r.teacher_id = :teacherId', { teacherId: teacherUserId })
+      .where('r.teacherId = :teacherId', { teacherId: teacherUserId })
       .getRawOne();
 
     await this.teacherRepo.update(

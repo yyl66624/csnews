@@ -1,1 +1,7 @@
-{ "navigationBarTitleText": "教师订单" }
+{
+  "navigationBarTitleText": "教师订单",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  }
+}

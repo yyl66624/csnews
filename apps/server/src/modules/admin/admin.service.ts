@@ -96,7 +96,7 @@ export class AdminService {
       .leftJoinAndSelect('o.payment', 'payment');
 
     if (status) qb.where('o.status = :status', { status });
-    qb.orderBy('o.created_at', 'DESC');
+    qb.orderBy('o.createdAt', 'DESC');
     qb.skip((page - 1) * pageSize).take(pageSize);
 
     const [items, total] = await qb.getManyAndCount();

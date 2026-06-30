@@ -5,7 +5,8 @@
   "scripts": {
     "build": "nest build",
     "start": "nest start",
-    "start:dev": "node scripts/setup-mysql.js && nest start --watch",
+    "stop": "node scripts/kill-port.js 3000",
+    "start:dev": "node scripts/setup-mysql.js && node scripts/kill-port.js 3000 && nest start --watch",
     "start:prod": "node dist/main",
     "db:setup": "node scripts/setup-mysql.js"
   },

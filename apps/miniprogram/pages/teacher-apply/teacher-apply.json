@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "教师入驻" }
+{
+  "navigationBarTitleText": "教师入驻",
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  }
+}

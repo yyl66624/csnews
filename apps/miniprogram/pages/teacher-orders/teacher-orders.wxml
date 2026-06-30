@@ -1,6 +1,12 @@
 <view class="container">
-  <view wx:if="{{orders.length === 0}}" class="empty">暂无订单</view>
-  <view wx:for="{{orders}}" wx:key="id" class="card">
+  <!-- 空态 -->
+  <view wx:if="{{orders.length === 0}}" class="empty">
+    <text class="empty-icon">📋</text>
+    <text>暂无订单</text>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:for="{{orders}}" wx:key="id" class="card anim-slide-up">
     <view class="flex-between">
       <text>{{item.subject}} · {{item.gradeLevel}}</text>
       <text class="status">{{statusMap[item.status]}}</text>

@@ -1,23 +1,26 @@
 <view class="container">
-<view wx:if="{{!profile}}" class="empty-tip card">
-  <text>尚未提交教师入驻申请</text>
-  <navigator url="/pages/teacher-apply/teacher-apply" class="apply-link">前往申请入驻</navigator>
-</view>
-<view wx:if="{{profile}}">
-  <view class="card">
-    <view class="audit-status">审核状态：{{auditStatusMap[profile.auditStatus] || profile.auditStatus}}</view>
-    <view wx:if="{{profile.rejectReason}}" class="reject-reason">驳回原因：{{profile.rejectReason}}</view>
+  <view wx:if="{{!profile}}" class="empty-tip card anim-slide-up">
+    <text class="empty-icon">🎓</text>
+    <text>尚未提交教师入驻申请</text>
+    <navigator url="/pages/teacher-apply/teacher-apply" class="apply-link">前往申请入驻</navigator>
   </view>
 
-  <view class="card stats">
-    <view class="stat-item"><text class="num">{{profile.rating}}</text><text class="label">评分</text></view>
-    <view class="stat-item"><text class="num">{{profile.reviewCount}}</text><text class="label">评价</text></view>
-    <view class="stat-item"><text class="num">{{profile.orderCount}}</text><text class="label">订单</text></view>
-  </view>
+  <view wx:if="{{profile}}">
+    <view class="card anim-slide-up">
+      <view class="audit-status">审核状态：{{auditStatusMap[profile.auditStatus] || profile.auditStatus}}</view>
+      <view wx:if="{{profile.rejectReason}}" class="reject-reason">驳回原因：{{profile.rejectReason}}</view>
+    </view>
 
-  <view class="menu card">
-    <view class="menu-item" bindtap="goOrders">
-      <text>订单管理</text><text class="arrow">›</text>
+    <view class="card stats anim-slide-up">
+      <view class="stat-item"><text class="num">{{profile.rating}}</text><text class="label">评分</text></view>
+      <view class="stat-item"><text class="num">{{profile.reviewCount}}</text><text class="label">评价</text></view>
+      <view class="stat-item"><text class="num">{{profile.orderCount}}</text><text class="label">订单</text></view>
+    </view>
+
+    <view class="menu card anim-slide-up">
+      <view class="menu-item" bindtap="goOrders">
+        <text>订单管理</text><text class="arrow">›</text>
+      </view>
     </view>
   </view>
 </view>

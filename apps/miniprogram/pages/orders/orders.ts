@@ -39,8 +39,13 @@ Page({
         });
         that.setData({ orders: items, loading: false });
       })
-      .catch(function () {
-        that.setData({ loading: false });
+      .catch(function (err) {
+        that.setData({ loading: false, orders: [] });
+        wx.showToast({
+          title: (err && err.message) || '加载失败',
+          icon: 'none',
+          duration: 3000,
+        });
       });
   },
 

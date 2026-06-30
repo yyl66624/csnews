@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { Order } from './entities/order.entity';
@@ -66,26 +66,20 @@ export class OrdersService {
   async list(userId: number, dto: ListOrdersDto) {
     const page = dto.page || 1;
     const pageSize = dto.pageSize || 10;
-    const qb = this.orderRepo
-      .createQueryBuilder('o')
-      .leftJoinAndSelect('o.student', 'student')
-      .leftJoinAndSelect('o.teacher', 'teacher')
-      .leftJoinAndSelect('o.payment', 'payment');
-
-    if (dto.role === 'teacher') {
-      qb.where('o.teacher_id = :userId', { userId });
-    } else {
-      qb.where('o.student_id = :userId', { userId });
-    }
+    const where: FindOptionsWhere<Order> =
+      dto.role === 'teacher' ? { teacherId: userId } : { studentId: userId };
 
     if (dto.status) {
-      qb.andWhere('o.status = :status', { status: dto.status });
+      where.status = dto.status as OrderStatus;
     }
 
-    qb.orderBy('o.created_at', 'DESC');
-    qb.skip((page - 1) * pageSize).take(pageSize);
-
-    const [items, total] = await qb.getManyAndCount();
+    const [items, total] = await this.orderRepo.findAndCount({
+      where,
+      relations: ['student', 'teacher', 'payment'],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
     return {
       items: items.map((o) => this.formatOrder(o)),
       total,

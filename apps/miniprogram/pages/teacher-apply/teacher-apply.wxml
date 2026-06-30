@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">基本信息</view>
     <input placeholder="真实姓名" data-field="realName" bindinput="onInput" />
     <input placeholder="身份证号" data-field="idCard" bindinput="onInput" />
@@ -14,7 +14,7 @@
     <input placeholder="教学风格" data-field="teachingStyle" bindinput="onInput" />
   </view>
 
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">科目定价</view>
     <view wx:for="{{subjectPrices}}" wx:key="index" class="price-item">
       <input placeholder="科目" value="{{item.subject}}" data-index="{{index}}" data-field="subject" bindinput="onSubjectPriceChange" />
@@ -24,7 +24,7 @@
     <button size="mini" bindtap="addSubject">+ 添加科目</button>
   </view>
 
-  <view class="card">
+  <view class="card anim-slide-up">
     <view class="section-title">可授课时间</view>
     <view wx:for="{{schedules}}" wx:key="index" class="schedule-item">
       周{{item.dayOfWeek}} {{item.startTime}}-{{item.endTime}}

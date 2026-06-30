@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="profile-header card" wx:if="{{userInfo}}">
+  <view class="profile-header card anim-slide-up" wx:if="{{userInfo}}">
     <image class="avatar-lg" src="{{userInfo.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" />
     <view class="profile-info">
       <view class="name">{{userInfo.nickname}}</view>
@@ -8,11 +8,11 @@
     </view>
   </view>
 
-  <view class="profile-header card" wx:else>
+  <view class="profile-header card anim-slide-up" wx:else>
     <button class="btn-primary login-btn" bindtap="onLogin">微信一键登录</button>
   </view>
 
-  <view class="menu card" wx:if="{{userInfo}}">
+  <view class="menu card anim-slide-up" wx:if="{{userInfo}}">
     <view class="menu-item" wx:if="{{!isTeacher}}" bindtap="goTeacherApply">
       <text>成为教师</text><text class="arrow">›</text>
     </view>

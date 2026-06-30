@@ -1,6 +1,6 @@
 <view class="container">
   <!-- 筛选栏 -->
-  <view class="filter-bar card">
+  <view class="filter-bar card anim-slide-up">
     <scroll-view scroll-x class="filter-scroll">
       <view
         wx:for="{{subjects}}"
@@ -24,18 +24,33 @@
     </picker>
   </view>
 
-  <!-- 教师列表 -->
-  <view wx:if="{{loadError}}" class="error-tip">{{loadError}}</view>
-  <view wx:if="{{teachers.length === 0 && !loading && !loadError}}" class="empty">暂无匹配教师</view>
+  <!-- 错误态 -->
+  <view wx:if="{{loadError}}" class="error-tip">
+    <text>{{loadError}}</text>
+    <view class="retry-btn" bindtap="onRetry">点此重试</view>
+  </view>
+
+  <!-- 骨架屏 -->
+  <skeleton wx:if="{{loading && teachers.length === 0}}" type="card" count="4" />
+
+  <!-- 空态 -->
+  <view wx:if="{{teachers.length === 0 && !loading && !loadError}}" class="empty">
+    <text class="empty-icon">📚</text>
+    <text>暂无匹配教师</text>
+    <text style="display:block;font-size:24rpx;margin-top:8rpx;color:#bbb;">试试调整筛选条件</text>
+  </view>
+
+  <!-- 教师卡片列表（带交错入场动画） -->
   <view
     wx:for="{{teachers}}"
     wx:key="id"
     class="teacher-card card"
     data-id="{{item.id}}"
     bindtap="goDetail"
+    animation="{{item.animData}}"
   >
     <view class="flex-row">
-      <image class="avatar" src="{{item.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" />
+      <image class="avatar" src="{{item.avatarUrl || '/assets/icons/user.png'}}" mode="aspectFill" lazy-load />
       <view class="teacher-info">
         <view class="flex-between">
           <text class="name">{{item.realName || item.nickname}}</text>
@@ -53,6 +68,5 @@
     </view>
   </view>
 
-  <view wx:if="{{loading}}" class="empty">加载中...</view>
-  <view wx:if="{{!hasMore && teachers.length > 0}}" class="empty">没有更多了</view>
+  <view wx:if="{{!hasMore && teachers.length > 0}}" class="empty">— 没有更多了 —</view>
 </view>

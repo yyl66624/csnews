@@ -1,0 +1,63 @@
+<!-- 骨架屏组件 — 带微光动画的占位卡片 -->
+
+<!-- 通用卡片骨架（教师列表/订单列表） -->
+<view wx:if="{{type === 'card'}}" class="sk-card-list">
+  <view wx:for="{{_dummy}}" wx:key="*this" class="sk-card">
+    <view class="sk-line sk-avatar"></view>
+    <view class="sk-body">
+      <view class="sk-line sk-title"></view>
+      <view class="sk-line sk-meta"></view>
+      <view class="sk-line sk-tags"></view>
+    </view>
+  </view>
+</view>
+
+<!-- 详情页骨架 -->
+<view wx:if="{{type === 'detail'}}">
+  <view class="sk-card">
+    <view class="sk-row">
+      <view class="sk-line sk-avatar-lg"></view>
+      <view class="sk-body">
+        <view class="sk-line sk-title-lg"></view>
+        <view class="sk-line sk-meta"></view>
+        <view class="sk-line sk-meta-short"></view>
+      </view>
+    </view>
+    <view class="sk-line sk-full"></view>
+    <view class="sk-line sk-full-short"></view>
+  </view>
+  <view class="sk-card">
+    <view class="sk-line sk-heading"></view>
+    <view class="sk-line sk-full"></view>
+    <view class="sk-line sk-full"></view>
+  </view>
+  <view class="sk-card">
+    <view class="sk-line sk-heading"></view>
+    <view class="sk-line sk-full"></view>
+    <view class="sk-line sk-full-short"></view>
+  </view>
+</view>
+
+<!-- 纯列表骨架 -->
+<view wx:if="{{type === 'list'}}">
+  <view wx:for="{{_dummy}}" wx:key="*this" class="sk-row">
+    <view class="sk-line sk-full"></view>
+    <view class="sk-line sk-full-short"></view>
+  </view>
+</view>
+
+<!-- 头像+文字骨架 -->
+<view wx:if="{{type === 'avatar'}}">
+  <view class="sk-row">
+    <view class="sk-line sk-avatar-lg"></view>
+    <view class="sk-body">
+      <view class="sk-line sk-title"></view>
+      <view class="sk-line sk-meta"></view>
+    </view>
+  </view>
+</view>
+
+<!-- 纯文字骨架 -->
+<view wx:if="{{type === 'text'}}">
+  <view wx:for="{{_dummy}}" wx:key="*this" class="sk-line sk-full"></view>
+</view>
