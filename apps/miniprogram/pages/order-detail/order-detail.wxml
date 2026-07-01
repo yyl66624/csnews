@@ -13,9 +13,11 @@
     <view class="row"><text class="label">教师</text><text>{{teacherName}}</text></view>
     <view class="row"><text class="label">课时费</text><text>¥{{order.lessonFee}}</text></view>
     <view class="row"><text class="label">服务费</text><text>¥{{order.serviceFee}}</text></view>
-    <view class="row total"><text class="label">合计</text><text class="price">¥{{order.totalAmount}}</text></view>
+    <view class="row"><text class="label">合计</text><text class="price">¥{{order.totalAmount}}</text></view>
+    <view class="row" wx:if="{{order.payment}}"><text class="label">支付状态</text><text>{{payStatusMap[order.payment.payStatus] || order.payment.payStatus}}</text></view>
   </view>
 
+  <button wx:if="{{order.status === 'pending' && order.payment && order.payment.payStatus === 'unpaid'}}" class="btn-primary" bindtap="payOrder" loading="{{paying}}" disabled="{{paying}}">立即支付</button>
   <button wx:if="{{order.status === 'pending' || order.status === 'confirmed'}}" class="btn-cancel" bindtap="cancelOrder">取消订单</button>
   <button wx:if="{{order.status === 'completed'}}" class="btn-primary" bindtap="goReview">去评价</button>
 </view>

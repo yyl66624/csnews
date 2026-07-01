@@ -10,10 +10,15 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { DatabaseModule } from './database/database.module';
+import { CacheModule } from './modules/cache/cache.module';
+import { StorageModule } from './modules/storage/storage.module';
+import { RiskModule } from './modules/risk/risk.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -51,6 +56,9 @@ import { DatabaseModule } from './database/database.module';
     ReviewsModule,
     AdminModule,
     PaymentsModule,
+    StorageModule,
+    RiskModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

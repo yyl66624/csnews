@@ -9,7 +9,8 @@
     "pages/profile/profile",
     "pages/teacher-apply/teacher-apply",
     "pages/teacher-home/teacher-home",
-    "pages/teacher-orders/teacher-orders"
+    "pages/teacher-orders/teacher-orders",
+    "pages/legal/legal"
   ],
   "window": {
     "navigationBarBackgroundColor": "#4A90D9",

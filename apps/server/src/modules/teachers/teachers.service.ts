@@ -8,6 +8,8 @@ import { TeacherSubject } from './entities/teacher-subject.entity';
 import { TeacherSchedule } from './entities/teacher-schedule.entity';
 import { Review } from '../reviews/entities/review.entity';
 import { AuditStatus, UserRole } from '../../common/enums';
+import { CacheService } from '../cache/cache.service';
+import { maskName, maskIdCard } from '../../common/utils/mask.util';
 import {
   SearchTeachersDto,
   ApplyTeacherDto,
@@ -24,9 +26,14 @@ export class TeachersService {
     @InjectRepository(TeacherSubject) private subjectRepo: Repository<TeacherSubject>,
     @InjectRepository(TeacherSchedule) private scheduleRepo: Repository<TeacherSchedule>,
     @InjectRepository(Review) private reviewRepo: Repository<Review>,
+    private cache: CacheService,
   ) {}
 
   async search(dto: SearchTeachersDto) {
+    const cacheKey = `teachers:search:${JSON.stringify(dto)}`;
+    const cached = await this.cache.get(cacheKey);
+    if (cached) return JSON.parse(cached);
+
     const page = dto.page || 1;
     const pageSize = dto.pageSize || 10;
 
@@ -67,12 +74,14 @@ export class TeachersService {
     qb.skip((page - 1) * pageSize).take(pageSize);
     const [items, total] = await qb.getManyAndCount();
 
-    return {
+    const result = {
       items: items.map((t) => this.formatTeacherListItem(t)),
       total,
       page,
       pageSize,
     };
+    await this.cache.set(cacheKey, JSON.stringify(result), 300);
+    return result;
   }
 
   async getDetail(teacherUserId: number) {
@@ -90,7 +99,7 @@ export class TeachersService {
     });
 
     return {
-      ...this.formatTeacherDetail(teacher),
+      ...this.formatTeacherDetail(teacher, { maskPublic: true }),
       reviews: reviews.map((r) => ({
         id: r.id,
         rating: r.rating,
@@ -194,39 +203,42 @@ export class TeachersService {
       relations: ['subjects', 'schedules', 'certificates'],
     });
     if (!profile) return null;
-    return this.formatTeacherDetail(profile);
+    return {
+      ...this.formatTeacherDetail(profile, { maskPublic: false, includeIdCard: true }),
+    };
   }
 
   private formatTeacherListItem(t: TeacherProfile) {
+    const detail = this.formatTeacherDetail(t, { maskPublic: true });
     const minPrice = t.subjects?.length
       ? Math.min(...t.subjects.map((s) => Number(s.price)))
       : Number(t.hourlyRate);
     return {
-      id: t.userId,
-      nickname: t.user?.nickname,
-      avatarUrl: t.user?.avatarUrl,
-      realName: t.realName,
-      education: t.education,
-      teachingYears: t.teachingYears,
-      teachingStyle: t.teachingStyle,
-      rating: Number(t.rating),
-      reviewCount: t.reviewCount,
-      city: t.city,
+      id: detail.id,
+      nickname: detail.nickname,
+      avatarUrl: detail.avatarUrl,
+      realName: detail.realName,
+      education: detail.education,
+      teachingYears: detail.teachingYears,
+      teachingStyle: detail.teachingStyle,
+      rating: detail.rating,
+      reviewCount: detail.reviewCount,
+      city: detail.city,
       minPrice,
-      subjects: t.subjects?.map((s) => ({
-        subject: s.subject,
-        gradeLevel: s.gradeLevel,
-        price: Number(s.price),
-      })),
+      subjects: detail.subjects,
     };
   }
 
-  private formatTeacherDetail(t: TeacherProfile) {
+  private formatTeacherDetail(
+    t: TeacherProfile,
+    opts: { maskPublic?: boolean; includeIdCard?: boolean } = {},
+  ) {
+    const maskPublic = opts.maskPublic ?? false;
     return {
       id: t.userId,
       nickname: t.user?.nickname,
       avatarUrl: t.user?.avatarUrl,
-      realName: t.realName,
+      realName: maskPublic ? maskName(t.realName) : t.realName,
       education: t.education,
       teachingYears: t.teachingYears,
       bio: t.bio,
@@ -237,6 +249,7 @@ export class TeachersService {
       city: t.city,
       auditStatus: t.auditStatus,
       rejectReason: t.rejectReason,
+      idCard: opts.includeIdCard ? maskIdCard(t.idCard) : undefined,
       subjects: t.subjects?.map((s) => ({
         id: s.id,
         subject: s.subject,

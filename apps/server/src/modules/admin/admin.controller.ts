@@ -1,12 +1,16 @@
-import { Controller, Get, Put, Body, Param, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { AdminService } from './admin.service';
+import { PaymentsService } from '../payments/payments.service';
 import { Roles } from '../auth/decorators/auth.decorators';
 import { UserRole, AuditStatus } from '../../common/enums';
 
 @Controller('admin')
 @Roles(UserRole.ADMIN)
 export class AdminController {
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private paymentsService: PaymentsService,
+  ) {}
 
   @Get('dashboard')
   getDashboard() {
@@ -46,5 +50,13 @@ export class AdminController {
     @Query('pageSize') pageSize?: number,
   ) {
     return this.adminService.listOrders(status, page, pageSize);
+  }
+
+  @Post('orders/:id/refund')
+  refundOrder(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { reason?: string },
+  ) {
+    return this.paymentsService.refundOrder(id, body.reason);
   }
 }

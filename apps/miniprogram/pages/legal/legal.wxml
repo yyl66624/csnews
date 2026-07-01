@@ -1,0 +1,7 @@
+<view class="container" wx:if="{{doc}}">
+  <view class="updated">更新日期：{{doc.updatedAt}}</view>
+  <view wx:for="{{doc.sections}}" wx:key="heading" class="section card">
+    <view class="heading">{{item.heading}}</view>
+    <view class="body">{{item.body}}</view>
+  </view>
+</view>

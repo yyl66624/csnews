@@ -6,6 +6,7 @@ import { Order } from '../orders/entities/order.entity';
 import { TeacherProfile } from '../users/entities/teacher-profile.entity';
 import { OrderStatus } from '../../common/enums';
 import { CreateReviewDto } from './dto/review.dto';
+import { RiskService } from '../risk/risk.service';
 
 @Injectable()
 export class ReviewsService {
@@ -13,9 +14,11 @@ export class ReviewsService {
     @InjectRepository(Review) private reviewRepo: Repository<Review>,
     @InjectRepository(Order) private orderRepo: Repository<Order>,
     @InjectRepository(TeacherProfile) private teacherRepo: Repository<TeacherProfile>,
+    private risk: RiskService,
   ) {}
 
   async create(studentId: number, dto: CreateReviewDto) {
+    this.risk.assertClean(dto.content, '评价内容');
     const order = await this.orderRepo.findOne({ where: { id: dto.orderId } });
     if (!order) throw new NotFoundException('订单不存在');
     if (order.studentId !== studentId) throw new ForbiddenException('无权评价此订单');

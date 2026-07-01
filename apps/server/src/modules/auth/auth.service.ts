@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../../common/enums';
 import { WxLoginDto } from './dto/auth.dto';
+import { maskPhone } from '../../common/utils/mask.util';
 
 @Injectable()
 export class AuthService {
@@ -69,7 +70,7 @@ export class AuthService {
       id: user.id,
       nickname: user.nickname,
       avatarUrl: user.avatarUrl,
-      phone: user.phone,
+      phone: maskPhone(user.phone),
       role: user.role,
     };
   }

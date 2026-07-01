@@ -1,7 +1,8 @@
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { ForbiddenException, Injectable, ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { UserRole } from '../../../common/enums';
+import { ErrorCode } from '../../../common/error-codes';
 
 export const ROLES_KEY = 'roles';
 
@@ -33,6 +34,12 @@ export class RolesGuard {
     if (!requiredRoles) return true;
 
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.includes(user.role);
+    if (!user || !requiredRoles.includes(user.role)) {
+      throw new ForbiddenException({
+        code: ErrorCode.FORBIDDEN,
+        message: '无权访问此资源',
+      });
+    }
+    return true;
   }
 }

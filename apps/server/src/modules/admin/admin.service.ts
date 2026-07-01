@@ -40,13 +40,15 @@ export class AdminService {
   }
 
   async listTeachers(auditStatus?: AuditStatus, page = 1, pageSize = 10) {
+    const p = Math.max(1, Number(page) || 1);
+    const ps = Math.max(1, Math.min(100, Number(pageSize) || 10));
     const where = auditStatus ? { auditStatus } : {};
     const [items, total] = await this.teacherRepo.findAndCount({
       where,
       relations: ['user', 'certificates', 'subjects'],
       order: { createdAt: 'DESC' },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      skip: (p - 1) * ps,
+      take: ps,
     });
 
     return {
@@ -78,17 +80,21 @@ export class AdminService {
   }
 
   async listUsers(role?: UserRole, page = 1, pageSize = 10) {
+    const p = Math.max(1, Number(page) || 1);
+    const ps = Math.max(1, Math.min(100, Number(pageSize) || 10));
     const where = role ? { role } : {};
     const [items, total] = await this.userRepo.findAndCount({
       where,
       order: { createdAt: 'DESC' },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      skip: (p - 1) * ps,
+      take: ps,
     });
     return { items, total };
   }
 
   async listOrders(status?: string, page = 1, pageSize = 10) {
+    const p = Math.max(1, Number(page) || 1);
+    const ps = Math.max(1, Math.min(100, Number(pageSize) || 10));
     const qb = this.orderRepo
       .createQueryBuilder('o')
       .leftJoinAndSelect('o.student', 'student')
@@ -97,7 +103,7 @@ export class AdminService {
 
     if (status) qb.where('o.status = :status', { status });
     qb.orderBy('o.createdAt', 'DESC');
-    qb.skip((page - 1) * pageSize).take(pageSize);
+    qb.skip((p - 1) * ps).take(ps);
 
     const [items, total] = await qb.getManyAndCount();
     return { items, total };

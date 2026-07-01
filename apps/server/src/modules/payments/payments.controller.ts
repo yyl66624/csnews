@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, ParseIntPipe, ForbiddenException } from '@nestjs/common';
+import { Controller, Post, Param, ParseIntPipe, ForbiddenException, Headers, Body } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Public } from '../auth/decorators/auth.decorators';
@@ -15,7 +15,14 @@ export class PaymentsController {
     return this.paymentsService.createPrepay(user.id, orderId);
   }
 
-  /** 开发环境模拟支付成功，生产环境自动禁用 */
+  @Post('sync/:orderId')
+  syncStatus(
+    @CurrentUser() user: { id: number },
+    @Param('orderId', ParseIntPipe) orderId: number,
+  ) {
+    return this.paymentsService.syncPaymentStatus(orderId, user.id);
+  }
+
   @Post('mock-success/:orderId')
   mockSuccess(
     @CurrentUser() user: { id: number },
@@ -29,7 +36,10 @@ export class PaymentsController {
 
   @Public()
   @Post('notify')
-  handleNotify(@Body() body: unknown) {
-    return this.paymentsService.handleNotify(body);
+  handleNotify(
+    @Headers() headers: Record<string, string | string[] | undefined>,
+    @Body() body: Record<string, unknown>,
+  ) {
+    return this.paymentsService.handleNotify(headers, body);
   }
 }

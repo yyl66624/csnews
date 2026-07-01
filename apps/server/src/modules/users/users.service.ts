@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { StudentProfile } from './entities/student-profile.entity';
 import { UpdateStudentProfileDto, BindPhoneDto } from './dto/user.dto';
+import { maskPhone } from '../../common/utils/mask.util';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,15 @@ export class UsersService {
       relations: ['studentProfile', 'teacherProfile'],
     });
     if (!user) throw new NotFoundException('用户不存在');
-    return user;
+    return {
+      id: user.id,
+      nickname: user.nickname,
+      avatarUrl: user.avatarUrl,
+      phone: maskPhone(user.phone),
+      role: user.role,
+      studentProfile: user.studentProfile,
+      teacherProfile: user.teacherProfile,
+    };
   }
 
   async updateStudentProfile(userId: number, dto: UpdateStudentProfileDto) {

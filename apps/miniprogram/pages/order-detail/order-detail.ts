@@ -4,7 +4,9 @@ Page({
   data: {
     order: null,
     statusMap: api.ORDER_STATUS_MAP,
+    payStatusMap: { unpaid: '待支付', paid: '已支付', refunded: '已退款' },
     teacherName: '',
+    paying: false,
   },
 
   onLoad: function (options) {
@@ -15,7 +17,7 @@ Page({
 
   loadOrder: function (id) {
     var that = this;
-    api.ensureLogin()
+    return api.ensureLogin()
       .then(function () {
         return api.request({ url: '/orders/' + id });
       })
@@ -24,6 +26,7 @@ Page({
           order: order,
           teacherName: (order.teacher && order.teacher.nickname) || '教师',
         });
+        return order;
       })
       .catch(function () {
         wx.showToast({ title: '加载失败', icon: 'none' });
@@ -56,5 +59,47 @@ Page({
     var order = this.data.order;
     if (!order) return;
     wx.navigateTo({ url: '/pages/review/review?orderId=' + order.id });
+  },
+
+  payOrder: function () {
+    var that = this;
+    var order = this.data.order;
+    if (!order || this.data.paying) return;
+
+    this.setData({ paying: true });
+    var isDev = api.isDevApi();
+    var payPromise = isDev
+      ? api.request({ url: '/payments/mock-success/' + order.id, method: 'POST' })
+      : api.request({ url: '/payments/prepay/' + order.id, method: 'POST' }).then(function (res) {
+          return new Promise(function (resolve, reject) {
+            wx.requestPayment(Object.assign({}, res.paymentParams, {
+              success: resolve,
+              fail: function (err) {
+                reject(new Error((err && err.errMsg) || '支付取消'));
+              },
+            }));
+          });
+        });
+
+    payPromise
+      .then(function () {
+        wx.showToast({ title: '支付成功', icon: 'success' });
+        return that.loadOrder(order.id);
+      })
+      .catch(function (err) {
+        wx.showToast({ title: (err && err.message) || '支付失败', icon: 'none' });
+      })
+      .finally(function () {
+        that.setData({ paying: false });
+      });
+  },
+
+  syncPayStatus: function () {
+    var that = this;
+    var order = this.data.order;
+    if (!order) return;
+    api.request({ url: '/payments/sync/' + order.id, method: 'POST' })
+      .then(function () { that.loadOrder(order.id); })
+      .catch(function () {});
   },
 });

@@ -111,10 +111,12 @@ function request(options) {
               .catch(reject);
             return;
           }
-          var body = res.data || {};
-          var msg = body.message;
-          if (Array.isArray(msg)) msg = msg[0];
-          reject(new Error(msg || '请求失败(' + res.statusCode + ')'));
+        var body = res.data || {};
+        var msg = body.message;
+        if (Array.isArray(msg)) msg = msg[0];
+        var err = new Error(msg || '请求失败(' + res.statusCode + ')');
+        err.code = body.code;
+        reject(err);
         },
         fail: function (err) {
           var msg = (err && err.errMsg) || '';

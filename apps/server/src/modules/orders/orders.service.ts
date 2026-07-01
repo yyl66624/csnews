@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, MoreThan, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { Order } from './entities/order.entity';
@@ -9,6 +9,7 @@ import { TeacherSubject } from '../teachers/entities/teacher-subject.entity';
 import { TeacherProfile } from '../users/entities/teacher-profile.entity';
 import { OrderStatus, PayStatus, AuditStatus } from '../../common/enums';
 import { CreateOrderDto, ListOrdersDto, OrderActionDto } from './dto/order.dto';
+import { RiskService } from '../risk/risk.service';
 
 @Injectable()
 export class OrdersService {
@@ -18,9 +19,16 @@ export class OrdersService {
     @InjectRepository(TeacherSubject) private subjectRepo: Repository<TeacherSubject>,
     @InjectRepository(TeacherProfile) private teacherRepo: Repository<TeacherProfile>,
     private config: ConfigService,
+    private risk: RiskService,
   ) {}
 
   async create(studentId: number, dto: CreateOrderDto) {
+    const oneHourAgo = new Date(Date.now() - 3600 * 1000);
+    const recentCount = await this.orderRepo.count({
+      where: { studentId, createdAt: MoreThan(oneHourAgo) },
+    });
+    this.risk.assertOrderFrequency(recentCount);
+
     const teacher = await this.teacherRepo.findOne({
       where: { userId: dto.teacherId, auditStatus: AuditStatus.APPROVED },
     });
