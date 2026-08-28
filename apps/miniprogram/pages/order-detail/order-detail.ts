@@ -103,3 +103,5 @@ Page({
       .catch(function () {});
   },
 });
+
+export {};

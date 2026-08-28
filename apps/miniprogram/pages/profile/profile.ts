@@ -84,3 +84,5 @@ Page({
     wx.showToast({ title: '已退出', icon: 'success' });
   },
 });
+
+export {};

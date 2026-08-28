@@ -24,7 +24,17 @@ csnews/
 
 ## 快速开始
 
+> **环境要求：** Node.js ≥ 18（见 `package.json` 的 `engines`）、MySQL 8（或用 Docker）。
+
 ### 1. 准备 MySQL
+
+方式 A —— 用 Docker 一键启动（含建库与初始化脚本）：
+
+```bash
+npm run docker:up        # 等价于 docker-compose up -d（MySQL + Redis）
+```
+
+方式 B —— 本地 MySQL：手动建库后，后端首次启动会自动建表并导入演示数据。
 
 ```sql
 CREATE DATABASE IF NOT EXISTS csnews DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -41,6 +51,8 @@ npm run start:dev
 ```
 
 首次启动会自动建表、导入 3 位演示教师、创建管理员账号。
+
+> 也可使用根目录脚本：`npm run dev:server`（等同上面的后端命令）、`npm run dev:admin`。
 
 - API：`http://127.0.0.1:3000/api`
 - 停止占用端口：`npm run stop`

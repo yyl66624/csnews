@@ -53,3 +53,5 @@ Page({
     wx.navigateTo({ url: '/pages/order-detail/order-detail?id=' + e.currentTarget.dataset.id });
   },
 });
+
+export {};

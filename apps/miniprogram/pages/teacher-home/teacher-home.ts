@@ -28,3 +28,5 @@ Page({
     wx.navigateTo({ url: '/pages/teacher-orders/teacher-orders' });
   },
 });
+
+export {};

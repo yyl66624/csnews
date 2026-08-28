@@ -101,3 +101,5 @@ Page({
     wx.navigateTo({ url: '/pages/teacher-detail/teacher-detail?id=' + e.currentTarget.dataset.id });
   },
 });
+
+export {};

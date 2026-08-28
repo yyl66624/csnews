@@ -48,3 +48,5 @@ Page({
     wx.navigateTo({ url: '/pages/booking/booking?teacherId=' + teacher.id });
   },
 });
+
+export {};
